@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "729725225545",
+    "project_id": "evolve-team-notes",
+    "storage_bucket": "evolve-team-notes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729725225545:android:5ca7833a52425b5aadcd98",
+        "android_client_info": {
+          "package_name": "com.rootdown.dev.notesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "729725225545-pqskc37lef6jbm3kgd5o9qud7831md8b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rootdown.dev.notesapp",
+            "certificate_hash": "cb40d3f1c15ab2be118a94de98ce9f0df9323da9"
+          }
+        },
+        {
+          "client_id": "729725225545-ltoe0gau9str484d2acgbg1cmlevf0sm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1LkkTdBcIzDGSWu7rqGqC7Knq63UWpjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "729725225545-ltoe0gau9str484d2acgbg1cmlevf0sm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
