@@ -3,7 +3,7 @@ package com.rootdown.dev.notesapp.root.feature_material_req.domain.model.service
 import com.rootdown.dev.notesapp.root.feature_material_req.domain.model.MaterialReq
 import kotlinx.coroutines.flow.Flow
 
-interface StorageService {
+interface StorageMaterialReqService {
     val materailReqs: Flow<List<MaterialReq>>
 
     suspend fun getMR(mrId: String): MaterialReq?

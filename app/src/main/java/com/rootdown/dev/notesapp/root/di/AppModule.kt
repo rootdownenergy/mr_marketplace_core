@@ -14,7 +14,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-
     @Provides
     @Singleton
     fun provideNoteRepo(db: NoteDatabase): NoteRepository {
@@ -47,4 +46,6 @@ object AppModule {
             getNotesWithCloudGroups = GetNoteWithCloudGroup(repoNotesWithCloudGroup),
         )
     }
+
+
 }

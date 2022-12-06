@@ -1,9 +1,19 @@
 package com.rootdown.dev.notesapp.root.feature_material_req.domain.model.service
 
+import com.google.firebase.firestore.FirebaseFirestore
 import com.rootdown.dev.notesapp.root.feature_material_req.domain.model.MaterialReq
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
+import javax.inject.Inject
 
-class StorageServiceImpl : StorageService {
+class StorageMaterialReqServiceImpl
+    @Inject constructor(
+        val firestore: FirebaseFirestore,
+        val auth: AccountService
+    ): StorageMaterialReqService {
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     override val materailReqs: Flow<List<MaterialReq>>
         get() = TODO("Not yet implemented")
 
