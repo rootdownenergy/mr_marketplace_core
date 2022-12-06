@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "adc2948a4a5112c76bd831cfcb13e132",
+    "identityHash": "279a41fea5bd08f6eb572a84d11844d8",
     "entities": [
       {
         "tableName": "note",
@@ -123,12 +123,32 @@
           }
         ],
         "foreignKeys": []
+      },
+      {
+        "tableName": "mr_req",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mReqId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "mReqId",
+            "columnName": "mReqId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "mReqId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'adc2948a4a5112c76bd831cfcb13e132')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '279a41fea5bd08f6eb572a84d11844d8')"
     ]
   }
 }

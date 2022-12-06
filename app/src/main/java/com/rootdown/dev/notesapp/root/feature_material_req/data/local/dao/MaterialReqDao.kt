@@ -11,7 +11,7 @@ interface MaterialReqDao {
     fun getMaterialReqFB(): Flow<List<MaterialReqFB>>
 
     @Query("SELECT * FROM mr_req WHERE mReqId = :id")
-    suspend fun getMaterialReqFBById(id: Int): CloudGroup?
+    suspend fun getMaterialReqFBById(id: Int): MaterialReqFB?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMaterialReqFB(mr: MaterialReqFB)
