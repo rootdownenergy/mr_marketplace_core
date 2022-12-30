@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NotesApp">
         <activity
-            android:name=".root.feature_note.presentation.MainActivity"
+            android:name=".root.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,5 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="firebase_performance_logcat_enabled"
+            android:value="true" />
     </application>
 </manifest>

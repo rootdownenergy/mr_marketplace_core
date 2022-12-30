@@ -46,6 +46,4 @@ object AppModule {
             getNotesWithCloudGroups = GetNoteWithCloudGroup(repoNotesWithCloudGroup),
         )
     }
-
-
 }

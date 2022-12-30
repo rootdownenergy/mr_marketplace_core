@@ -1,7 +1,6 @@
 package com.rootdown.dev.notesapp.root.feature_note.presentation.notes_list
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -9,11 +8,11 @@ import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.rootdown.dev.notesapp.root.feature_note.presentation.MainActivity
+import com.rootdown.dev.notesapp.root.MainActivity
 import com.rootdown.dev.notesapp.root.feature_note.presentation.notes_list.di.TestAppModule
-import com.rootdown.dev.notesapp.root.feature_note.presentation.theme.EvolveNoteAppTheme
-import com.rootdown.dev.notesapp.root.feature_note.presentation.util.Screen
-import com.rootdown.dev.notesapp.root.feature_note.presentation.util.TestTags
+import com.rootdown.dev.notesapp.root.theme.MaterialMarketplaceAppTheme
+import com.rootdown.dev.notesapp.root.util.Screen
+import com.rootdown.dev.notesapp.root.util.TestTags
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -43,7 +42,7 @@ class NotesScreenTest {
         composeRule.setContent {
             // still want to wrap around a nav obj
             val navControlller = rememberNavController()
-            EvolveNoteAppTheme {
+            MaterialMarketplaceAppTheme {
                 NavHost(
                     navController = navControlller,
                     startDestination = Screen.NotesScreen.route

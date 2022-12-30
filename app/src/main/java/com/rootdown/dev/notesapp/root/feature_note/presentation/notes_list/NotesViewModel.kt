@@ -4,11 +4,14 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rootdown.dev.notesapp.root.di.util.DefaultDispatcher
+import com.rootdown.dev.notesapp.root.di.util.IoDispatcher
 import com.rootdown.dev.notesapp.root.feature_note.domain.model.Note
 import com.rootdown.dev.notesapp.root.feature_note.domain.use_case.NoteUseCases
 import com.rootdown.dev.notesapp.root.feature_note.domain.util.NoteOrder
 import com.rootdown.dev.notesapp.root.feature_note.domain.util.OrderType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -17,10 +20,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(
-    private val noteUseCases: NoteUseCases
+    private val noteUseCases: NoteUseCases,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ): ViewModel() {
 
-    private val _state = mutableStateOf<NotesState>(NotesState())
+    private val _state = mutableStateOf(NotesState())
     val state: State<NotesState> = _state
 
     //store most recent note
@@ -45,13 +49,13 @@ class NotesViewModel @Inject constructor(
                 getNotes(event.noteOrder)
             }
             is NotesEvents.DeleteNote -> {
-                viewModelScope.launch {
+                viewModelScope.launch(ioDispatcher) {
                     noteUseCases.deleteNote(event.note)
                     recentlyDeletedNote = event.note
                 }
             }
             is NotesEvents.RestoreNote -> {
-                viewModelScope.launch {
+                viewModelScope.launch(ioDispatcher) {
                     noteUseCases.addNote(recentlyDeletedNote ?: return@launch)
                     recentlyDeletedNote = null
                 }

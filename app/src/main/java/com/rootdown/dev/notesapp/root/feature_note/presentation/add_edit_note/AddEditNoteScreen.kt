@@ -1,5 +1,6 @@
 package com.rootdown.dev.notesapp.root.feature_note.presentation.add_edit_note
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -30,6 +31,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AddEditNoteScreen(
     navController: NavController,
@@ -39,17 +41,13 @@ fun AddEditNoteScreen(
     val titleState = viewModel.noteTitle.value
     val contentState = viewModel.noteContent.value
     val state = viewModel.state.value
-
     val scaffoldState = rememberScaffoldState()
-
     val noteBackgroundAnimatable = remember {
         Animatable(
             Color(if(noteColor != -1) noteColor else viewModel.noteColor.value)
         )
     }
-
     val scope = rememberCoroutineScope()
-
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when(event){

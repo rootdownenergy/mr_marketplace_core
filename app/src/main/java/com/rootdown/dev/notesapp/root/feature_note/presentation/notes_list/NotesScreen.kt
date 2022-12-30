@@ -1,5 +1,6 @@
 package com.rootdown.dev.notesapp.root.feature_note.presentation.notes_list
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,24 +10,25 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Sort
-import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.rootdown.dev.notesapp.R
 import com.rootdown.dev.notesapp.root.feature_note.presentation.notes_list.components.NoteItem
 import com.rootdown.dev.notesapp.root.feature_note.presentation.notes_list.components.OrderSection
-import com.rootdown.dev.notesapp.root.feature_note.presentation.util.Screen
-import com.rootdown.dev.notesapp.root.feature_note.presentation.util.TestTags
+import com.rootdown.dev.notesapp.root.util.Screen
+import com.rootdown.dev.notesapp.root.util.TestTags
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalAnimationApi
 @Composable
 fun NotesScreen(
@@ -60,13 +62,12 @@ fun NotesScreen(
                     navigationIcon = {
                         IconButton(
                             onClick = {
-                                Firebase.auth.signOut()
                                 navController.navigate(Screen.LoginScreen.route)
                             }
                         ) {
                             Icon(
-                                imageVector = Icons.Rounded.ExitToApp,
-                                contentDescription = null,
+                                painter = painterResource(R.drawable.ic_baseline_logout_24),
+                                contentDescription = stringResource(id = R.string.sign_out)
                             )
                         }
                     }

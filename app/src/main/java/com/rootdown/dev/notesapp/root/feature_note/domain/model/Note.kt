@@ -3,8 +3,7 @@ package com.rootdown.dev.notesapp.root.feature_note.domain.model
 import android.os.Parcelable
 import androidx.annotation.Keep
 import androidx.room.*
-import com.rootdown.dev.notesapp.root.feature_note.presentation.theme.*
-import kotlinx.parcelize.Parcelize
+import com.rootdown.dev.notesapp.root.theme.*
 
 @Keep
 @Entity(

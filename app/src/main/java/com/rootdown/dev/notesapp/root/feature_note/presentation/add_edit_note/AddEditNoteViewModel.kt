@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rootdown.dev.notesapp.root.di.util.DefaultDispatcher
 import com.rootdown.dev.notesapp.root.di.util.IoDispatcher
 import com.rootdown.dev.notesapp.root.feature_note.data.local.NoteDao
 import com.rootdown.dev.notesapp.root.feature_note.domain.model.*
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class AddEditNoteViewModel @Inject constructor(
     private val noteUseCases: NoteUseCases,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     private val dao: NoteDao,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -33,14 +35,10 @@ class AddEditNoteViewModel @Inject constructor(
     private val _stateNWCG = mutableStateOf(NotesWithCloudGroupState())
     val state: State<NotesWithCloudGroupState> = _stateNWCG
 
-    private val _noteTitle = mutableStateOf(NoteTextFieldState(
-        hint = "Enter title..."
-    ))
+    private val _noteTitle = mutableStateOf(NoteTextFieldState(hint = "Enter title..."))
     val noteTitle: State<NoteTextFieldState> = _noteTitle
 
-    private val _noteContent = mutableStateOf(NoteTextFieldState(
-        hint = "Enter some content..."
-    ))
+    private val _noteContent = mutableStateOf(NoteTextFieldState(hint = "Enter some content..."))
     val noteContent: State<NoteTextFieldState> = _noteContent
 
     // must have initial value Note.noteColors.random().toArgb()
@@ -58,27 +56,39 @@ class AddEditNoteViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<Int>("noteId")?.let { noteId ->
-            if(noteId > -1){
-                viewModelScope.launch {
-                    Log.w("$*$", "in view model secondary constructor 1")
-                    noteUseCases.getNote(noteId)?.also { note ->
-                        currentNote = note
-                        Log.w("$*$", "in view model. note: ${note.toString()}")
-                        Log.w("$*$", "in view model note id: ${note.noteId.toString()}")
-                        currentNoteId = note.noteId
-                        Log.w("XXX", currentNoteId.toString())
-                        Log.w("XXX", note.color.toString())
-                        _noteTitle.value = noteTitle.value.copy(
-                            text = note.title,
-                            isHintVisible = false
+            if(noteId.toString().isEmpty()) {
+                viewModelScope.launch(defaultDispatcher) {
+                    _eventFlow.emit(
+                        UiEvent.ShowSnackbar(
+                            "No Material Req Found"
                         )
-                        _noteContent.value = noteContent.value.copy(
-                            text = note.title,
-                            isHintVisible = false
-                        )
-                        _noteColor.value = note.color
+                    )
+                }
+            } else {
+                viewModelScope.launch(ioDispatcher) {
+                    try {
+                        noteUseCases.getNote(noteId)?.also { note ->
+                            currentNote = note
+                            currentNoteId = note.noteId
+                            _noteTitle.value = noteTitle.value.copy(
+                                text = note.title,
+                                isHintVisible = false
+                            )
+                            _noteContent.value = noteContent.value.copy(
+                                text = note.title,
+                                isHintVisible = false
+                            )
+                            _noteColor.value = note.color
+                        }
+                    } catch (e: Exception){
+                        viewModelScope.launch(defaultDispatcher) {
+                            _eventFlow.emit(
+                                UiEvent.ShowSnackbar(
+                                    "No Material Req Found"+e.message
+                                )
+                            )
+                        }
                     }
-
                 }
             }
         }
@@ -116,16 +126,16 @@ class AddEditNoteViewModel @Inject constructor(
                     try {
                         if (noteContent.value.text.isBlank())
                         {
-                            viewModelScope.launch {
+                            viewModelScope.launch(defaultDispatcher) {
                                 _eventFlow.emit(
-                                    UiEvent.ShowSnackbar(
+                                     UiEvent.ShowSnackbar(
                                          "MR  Content Cannot Be Blank"
                                     )
                                 )
                             }
 
                         } else if(noteTitle.value.text.isBlank()) {
-                            viewModelScope.launch {
+                            viewModelScope.launch(defaultDispatcher) {
                                 _eventFlow.emit(
                                     UiEvent.ShowSnackbar(
                                         "MR Note Title Cannot Be Blank"
@@ -133,7 +143,7 @@ class AddEditNoteViewModel @Inject constructor(
                                 )
                             }
                         } else if(noteTitle.value.text.isBlank() && noteContent.value.text.isBlank()){
-                            viewModelScope.launch {
+                            viewModelScope.launch(defaultDispatcher) {
                                 _eventFlow.emit(
                                     UiEvent.ShowSnackbar(
                                         "MR Note Title & Content Cannot Be Blank"
@@ -157,8 +167,6 @@ class AddEditNoteViewModel @Inject constructor(
                                         _eventFlow.emit(UiEvent.SaveNote)
 
                                     }
-
-                                    Log.w("$*$", "note if cloudGroup not -1")
                                 }
                                 else
                                 {
@@ -175,14 +183,10 @@ class AddEditNoteViewModel @Inject constructor(
                                         _eventFlow.emit(UiEvent.SaveNote)
 
                                     }
-                                    Log.w("$*$", "note if cloudGroup default(not selected) : ")
                                 }
 
                             } else {
-                                viewModelScope.launch {
-                                    Log.w("$*$", "update note : ${currentNote.toString()}")
-                                    Log.w("$*$", "update note : ${currentNote.noteId.toString()}")
-                                    //noteUseCases.editNote(currentNote)
+                                viewModelScope.launch(ioDispatcher) {
                                     val note = Note(
                                         noteId = currentNote.noteId,
                                         title = noteTitle.value.text,
@@ -200,7 +204,7 @@ class AddEditNoteViewModel @Inject constructor(
                         }
 
                     } catch(e: InvalidNoteException){
-                        viewModelScope.launch {
+                        viewModelScope.launch(defaultDispatcher) {
                             _eventFlow.emit(
                                 UiEvent.ShowSnackbar(
                                     message = e.message ?: "Unknown Error"

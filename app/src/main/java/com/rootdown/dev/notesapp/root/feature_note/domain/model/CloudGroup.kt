@@ -2,7 +2,7 @@ package com.rootdown.dev.notesapp.root.feature_note.domain.model
 
 import androidx.annotation.Keep
 import androidx.room.*
-import com.rootdown.dev.notesapp.root.feature_note.presentation.theme.*
+import com.rootdown.dev.notesapp.root.theme.*
 
 @Keep
 @Entity(
